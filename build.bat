@@ -21,17 +21,10 @@ if errorlevel 1 (
   exit /b 1
 )
 
-::echo "Configuring project with CMake using Clang..."
-::cmake .. -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -G "Ninja" -A x64 -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
-::if errorlevel 1 (
-::  echo "CMake configuration failed. Aborting."
-::  exit /b 1
-::)
-
-echo "Configuring project with Premake..."
-premake5 vs2022
+echo "Configuring project with CMake using Clang..."
+cmake .. -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
 if errorlevel 1 (
-  echo "Premake configuration failed. Aborting."
+  echo "CMake configuration failed. Aborting."
   exit /b 1
 )
 
@@ -41,9 +34,6 @@ if errorlevel 1 (
   echo "Build failed. Aborting."
   exit /b 1
 )
-
-echo "Running executable..."
-cirrus.exe
 
 popd
 
