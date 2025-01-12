@@ -4,9 +4,13 @@ project(cirrus)
 # Define the path to the enigine directory
 set(CIRRUS_DIR "${CMAKE_SOURCE_DIR}/..")
 
+# Append Vulkan SDK Dir to Cmake
+list(APPEND CMAKE_PREFIX_PATH "$ENV{VULKAN_SDK}")
+
 # Find libraries
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
+find_package(Vulkan REQUIRED)
 
 # Add all .cpp files in the src directory and its subdirectories
 file(GLOB_RECURSE CPP_SOURCES src/*.cpp)
@@ -19,7 +23,9 @@ add_executable(${PROJECT_NAME} src/main.cpp ${CPP_SOURCES} ${HEADER_FILES})
 
 # Include enigine headers
 target_include_directories(${PROJECT_NAME} PRIVATE ${ENIGINE_DIR}/src)
+target_include_directories(${PROJECT_NAME} PRIVATE $ENV{VULKAN_SDK})
 
 # Link libraries to the target
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
+target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Vulkan)
