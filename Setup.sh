@@ -1,9 +1,24 @@
 #!/bin/bash
 
+# Function to install Xcode Command Line Tools on macOS
+install_xcode_tools() {
+    echo "Checking for Xcode Command Line Tools..."
+    if ! xcode-select -p &>/dev/null; then
+        echo "Xcode Command Line Tools are not installed. Installing now..."
+        xcode-select --install
+        echo "Please complete the installation, then re-run this script."
+        exit 1
+    else
+        echo "Xcode Command Line Tools are already installed."
+    fi
+}
+
 # Function to install tools on macOS
 install_tools_mac() {
     echo "Installing tools on macOS..."
 
+    install_xcode_tools
+    
     # Check if Homebrew is installed
     if command -v brew &> /dev/null; then
         echo "Homebrew is already installed."
