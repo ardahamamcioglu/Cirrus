@@ -1,24 +1,71 @@
 #!/bin/bash
 
-# Function to check if brew is installed
-check_brew() {
+# Function to install tools on macOS
+install_tools_mac() {
+    echo "Installing tools on macOS..."
+
+    # Check if Homebrew is installed
     if command -v brew &> /dev/null; then
         echo "Homebrew is already installed."
     else
         echo "Homebrew is not installed. Installing now..."
-        install_brew
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || {
+            echo "Failed to install Homebrew. Please check your internet connection or try manually."
+            exit 1
+        }
+        echo "Homebrew installation complete."
     fi
-}
 
-# Function to install Homebrew
-install_brew() {
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || {
-        echo "Failed to install Homebrew. Please check your internet connection or try manually."
+    # Install MoltenVK
+    echo "Installing MoltenVK..."
+    brew install molten-vk || {
+        echo "Failed to install MoltenVK. Please check your Homebrew installation or try manually."
         exit 1
     }
-    echo "Homebrew installation complete."
+
+    # Install Conan
+    echo "Installing Conan..."
+    brew install conan || {
+        echo "Failed to install Conan. Please check your Homebrew installation or try manually."
+        exit 1
+    }
+
+    echo "All tools installed successfully on macOS."
 }
 
-# Run the check
-check_brew
+# Function to install tools on Windows
+install_tools_windows() {
+    echo "Installing tools on Windows..."
 
+    # Check if winget is available
+    if ! command -v winget &> /dev/null; then
+        echo "winget is not available. Please install it manually or update Windows to include it."
+        exit 1
+    fi
+
+    # Install Vulkan SDK (MoltenVK is not applicable for Windows)
+    echo "Installing Vulkan SDK..."
+    winget install --id LunarG.VulkanSDK -e --silent || {
+        echo "Failed to install Vulkan SDK. Please check your winget installation or try manually."
+        exit 1
+    }
+
+    # Install Conan
+    echo "Installing Conan..."
+    winget install --id Conan.Conan -e --silent || {
+        echo "Failed to install Conan. Please check your winget installation or try manually."
+        exit 1
+    }
+
+    echo "All tools installed successfully on Windows."
+}
+
+# Detect operating system and install tools
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    install_tools_mac
+elif [[ "$OSTYPE" == "msys"* || "$OSTYPE" == "cygwin"* || "$OSTYPE" == "win32" ]]; then
+    install_tools_windows
+else
+    echo "Unsupported operating system. Exiting."
+    exit 1
+fi
