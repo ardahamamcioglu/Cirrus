@@ -18,7 +18,7 @@ install_tools_mac() {
     echo "Installing tools on macOS..."
 
     install_xcode_tools
-    
+
     # Check if Homebrew is installed
     if command -v brew &> /dev/null; then
         echo "Homebrew is already installed."
@@ -30,13 +30,14 @@ install_tools_mac() {
         }
         echo "Homebrew installation complete."
     fi
-
+    
     # Install MoltenVK
     echo "Installing MoltenVK..."
     brew install molten-vk || {
         echo "Failed to install MoltenVK. Please check your Homebrew installation or try manually."
         exit 1
     }
+    
 
     # Install Conan
     echo "Installing Conan..."
@@ -58,7 +59,7 @@ install_tools_windows() {
         exit 1
     fi
 
-    # Install Vulkan SDK (MoltenVK is not applicable for Windows)
+    # Install Vulkan SDK
     echo "Installing Vulkan SDK..."
     winget install --id LunarG.VulkanSDK -e --silent || {
         echo "Failed to install Vulkan SDK. Please check your winget installation or try manually."

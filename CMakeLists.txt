@@ -1,6 +1,16 @@
 cmake_minimum_required(VERSION 3.24)
 project(cirrus)
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  target_compile_definitions(cirrus PUBLIC "LINUX_OS")
+endif()
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+  target_compile_definitions(cirrus PUBLIC "MACOS_OS")
+endif()
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  target_compile_definitions(cirrus PUBLIC "WINDOWS_OS")
+endif()
+
 # Define the path to the enigine directory
 set(CIRRUS_DIR "${CMAKE_SOURCE_DIR}/..")
 
