@@ -1,9 +1,7 @@
 [requires]
 glfw/3.4
-glew/2.2.0
-angelscript/2.37.0
-imgui/1.91.5-docking
 glm/1.0.1
+imgui/1.91.5-docking
 
 [generators]
 CMakeDeps
