@@ -19,7 +19,6 @@ list(APPEND CMAKE_PREFIX_PATH "$ENV{VULKAN_SDK}")
 
 # Find libraries
 find_package(glfw3 REQUIRED)
-find_package(glm REQUIRED)
 find_package(Vulkan REQUIRED)
 
 # Add all .cpp files in the src directory and its subdirectories
@@ -37,5 +36,4 @@ target_include_directories(${PROJECT_NAME} PRIVATE $ENV{VULKAN_SDK})
 
 # Link libraries to the target
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
-target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
 target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Vulkan)

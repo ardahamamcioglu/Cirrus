@@ -11,8 +11,8 @@ install_tools_mac() {
     brew install python
     echo "Installed Python."
 
-    pip install conan
-    echo "Installed Conan."
+    pip3 install -r requirements.txt
+    echo "Installed required Python packages."
 
     echo "All tools installed successfully. Install Vulkan SDK from https://vulkan.lunarg.com/sdk/home."
 }
@@ -24,11 +24,8 @@ install_tools_windows() {
     winget install --id=Python.Python.3 -e
     echo "Installed Python."
 
-    winget install --id=KhronosGroup.VulkanSDK -e
-    echo "Installed Vulkan SDK."
-    
-    pip install conan -y
-    echo "Installed Conan."
+    pip3 install -r requirements.txt
+    echo "Installed required Python packages."
 
     echo "All tools installed successfully."
 }
@@ -38,16 +35,13 @@ install_tools_linux() {
     echo "Installing tools..."
 
     sudo apt update
-    sudo apt upgrade -y
+    sudo apt upgrade
     
     sudo apt install python3 python3-pip -y
     echo "Installed Python."
-    
-    sudo apt install vulkan-sdk -y
-    echo "Installed Vulkan SDK."
 
-    pip install conan -y
-    echo "Installed Conan."
+    pip3 install -r requirements.txt
+    echo "Installed required Python packages."
 
     echo "All tools installed successfully."
 }   
@@ -61,5 +55,13 @@ elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     install_tools_linux
 else
     echo "Unsupported operating system. Exiting."
+fi
+
+#Build
+python3 build.py
+if [ $? -ne 0 ]; then
+    echo "Build failed. Please check the error messages above."
     exit 1
+else
+    echo "Build completed successfully."
 fi
