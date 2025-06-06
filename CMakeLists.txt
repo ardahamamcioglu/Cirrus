@@ -11,6 +11,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glfw)
 
+#Fetch GLM
+FetchContent_Declare(
+    glm
+    GIT_REPOSITORY https://github.com/g-truc/glm.git
+    GIT_TAG        0.9.9.8 # Use the latest stable version
+)
+FetchContent_MakeAvailable(glm)
+
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   target_compile_definitions(cirrus PUBLIC "LINUX_OS")
 endif()
@@ -43,6 +51,7 @@ add_executable(${PROJECT_NAME} src/main.cpp ${CPP_SOURCES} ${HEADER_FILES})
 # Include enigine headers
 target_include_directories(${PROJECT_NAME} PRIVATE ${ENIGINE_DIR}/src)
 target_include_directories(${PROJECT_NAME} PRIVATE $ENV{VULKAN_SDK})
+target_include_directories(${PROJECT_NAME} PRIVATE ${glm_SOURCE_DIR})
 
 # Link libraries to the target
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
