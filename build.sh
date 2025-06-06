@@ -6,6 +6,12 @@ set -e
 # Define build directory
 BUILD_DIR="build"
 
+# Check for clean build flag
+if [[ "$1" == "clean" ]]; then
+    echo "Performing a clean build..."
+    rm -rf "$BUILD_DIR"
+fi
+
 # Create build directory if it doesn't exist
 if [ ! -d "$BUILD_DIR" ]; then
     mkdir "$BUILD_DIR"

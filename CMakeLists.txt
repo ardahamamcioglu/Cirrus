@@ -19,16 +19,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glm)
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-  target_compile_definitions(cirrus PUBLIC "LINUX_OS")
-endif()
-if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-  target_compile_definitions(cirrus PUBLIC "MACOS_OS")
-endif()
-if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-  target_compile_definitions(cirrus PUBLIC "WINDOWS_OS")
-endif()
-
 # Define the path to the enigine directory
 set(CIRRUS_DIR "${CMAKE_SOURCE_DIR}/..")
 
@@ -36,7 +26,7 @@ set(CIRRUS_DIR "${CMAKE_SOURCE_DIR}/..")
 list(APPEND CMAKE_PREFIX_PATH "$ENV{VULKAN_SDK}")
 
 # Find libraries
-find_package(glfw REQUIRED)
+#find_package(glfw REQUIRED)
 find_package(Vulkan REQUIRED)
 
 # Add all .cpp files in the src directory and its subdirectories
@@ -47,6 +37,16 @@ file(GLOB_RECURSE HEADER_FILES src/*.h)
 
 # Create the library target
 add_executable(${PROJECT_NAME} src/main.cpp ${CPP_SOURCES} ${HEADER_FILES})
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  target_compile_definitions(${PROJECT_NAME} PUBLIC "LINUX_OS")
+endif()
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+  target_compile_definitions(${PROJECT_NAME} PUBLIC "MACOS_OS")
+endif()
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  target_compile_definitions(${PROJECT_NAME} PUBLIC "WINDOWS_OS")
+endif()
 
 # Include enigine headers
 target_include_directories(${PROJECT_NAME} PRIVATE ${ENIGINE_DIR}/src)
