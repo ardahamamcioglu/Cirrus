@@ -58,3 +58,6 @@ main() {
     chmod +x build.sh
     echo "Setup complete. You can now run the build script using './build.sh'."
 }
+
+# Run the main function
+main
