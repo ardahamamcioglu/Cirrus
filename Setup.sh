@@ -1,67 +1,60 @@
 # Function to install tools on macOS
+# Install CMake on macOS
 install_tools_mac() {
     echo "Installing tools..."
-
     xcode-select --install
-    echo "Installed Xcode command line tools."
-    
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    echo "Installed Homebrew."
-
-    brew install python
-    echo "Installed Python."
-
-    pip3 install -r requirements.txt
-    echo "Installed required Python packages."
-
+    brew install git cmake ninja
+    echo "Installed Git, CMake, and Ninja."
     echo "All tools installed successfully. Install Vulkan SDK from https://vulkan.lunarg.com/sdk/home."
 }
 
-# Function to install tools on Windows
+# Install CMake on Windows
 install_tools_windows() {
     echo "Installing tools..."
-
-    winget install --id=Python.Python.3 -e
-    echo "Installed Python."
-
-    pip3 install -r requirements.txt
-    echo "Installed required Python packages."
-
+    winget install --id Git.Git -e --source winget
+    winget install -e --id Kitware.CMake
+    winget install -e --id Kitware.Ninja
+    echo "Installed Git, CMake, and Ninja."
     echo "All tools installed successfully."
 }
 
-# Function to install tools on Linux
+# Install CMake on Linux
 install_tools_linux() {
     echo "Installing tools..."
-
     sudo apt update
-    sudo apt upgrade
-    
-    sudo apt install python3 python3-pip -y
-    echo "Installed Python."
-
-    pip3 install -r requirements.txt
-    echo "Installed required Python packages."
-
+    sudo apt upgrade -y
+    sudo apt install git cmake ninja-build -y
+    echo "Installed Git, CMake, and Ninja."
     echo "All tools installed successfully."
-}   
+}
 
 # Detect operating system and install tools
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    install_tools_mac
-elif [[ "$OSTYPE" == "msys"* || "$OSTYPE" == "cygwin"* || "$OSTYPE" == "win32" ]]; then
-    install_tools_windows
-elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    install_tools_linux
-else
-    echo "Unsupported operating system. Exiting."
-fi
+detect_os_and_install_tools() {
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        install_tools_mac
+    elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        install_tools_linux
+    elif [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+        install_tools_windows
+    else
+        echo "Unsupported operating system: $OSTYPE"
+        exit 1
+    fi
+}
 
-#Build
-python3 build.py
-if [ $? -ne 0 ]; then
-    echo "Build failed. Please check the error messages above."
-    exit 1
-else
-    echo "Build completed successfully."
-fi
+# Main function to run the script
+main() {
+    #Check Vulkan SDK installation
+    if ! command -v vulkaninfo &> /dev/null; then
+        echo "Vulkan SDK is not installed. Please install it from https://vulkan.lunarg.com/sdk/home."
+        exit 1
+    fi
+    # Start tool installation
+    echo "Starting tool installation..."
+    detect_os_and_install_tools
+    echo "Tool installation completed."
+
+    chmod +x build.sh
+    echo "Setup complete. You can now run the build script using './build.sh'."
+}

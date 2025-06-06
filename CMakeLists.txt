@@ -1,6 +1,16 @@
 cmake_minimum_required(VERSION 3.24)
 project(cirrus)
 
+include(FetchContent)
+
+# Fetch GLFW
+FetchContent_Declare(
+    glfw
+    GIT_REPOSITORY https://github.com/glfw/glfw.git
+    GIT_TAG        3.3.8 # Use the latest stable version
+)
+FetchContent_MakeAvailable(glfw)
+
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   target_compile_definitions(cirrus PUBLIC "LINUX_OS")
 endif()
@@ -18,7 +28,7 @@ set(CIRRUS_DIR "${CMAKE_SOURCE_DIR}/..")
 list(APPEND CMAKE_PREFIX_PATH "$ENV{VULKAN_SDK}")
 
 # Find libraries
-find_package(glfw3 REQUIRED)
+find_package(glfw REQUIRED)
 find_package(Vulkan REQUIRED)
 
 # Add all .cpp files in the src directory and its subdirectories
