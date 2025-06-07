@@ -31,3 +31,6 @@ cd ..
 
 # Notify the user
 echo "Build completed successfully."
+
+# Reload the VS Code window to reflect changes
+#code --command workbench.action.reloadWindow

@@ -21,6 +21,16 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glm)
 
+#Fetch AngelScript
+FetchContent_Declare(
+    angelscript
+    URL https://www.angelcode.com/angelscript/sdk/files/angelscript_2.37.0.zip
+)
+
+FetchContent_MakeAvailable(glfw)
+FetchContent_MakeAvailable(glm)
+FetchContent_MakeAvailable(angelscript)
+
 # Define the path to the enigine directory
 set(CIRRUS_DIR "${CMAKE_SOURCE_DIR}/..")
 
@@ -28,7 +38,6 @@ set(CIRRUS_DIR "${CMAKE_SOURCE_DIR}/..")
 list(APPEND CMAKE_PREFIX_PATH "$ENV{VULKAN_SDK}")
 
 # Find libraries
-#find_package(glfw REQUIRED)
 find_package(Vulkan REQUIRED)
 
 # Add all .cpp files in the src directory and its subdirectories
@@ -50,11 +59,15 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
   target_compile_definitions(${PROJECT_NAME} PUBLIC "WINDOWS_OS")
 endif()
 
+add_subdirectory(${angelscript_SOURCE_DIR}/angelscript/projects/cmake ${CMAKE_BINARY_DIR}/angelscript)
+
 # Include enigine headers
 target_include_directories(${PROJECT_NAME} PRIVATE ${ENIGINE_DIR}/src)
 target_include_directories(${PROJECT_NAME} PRIVATE $ENV{VULKAN_SDK})
 target_include_directories(${PROJECT_NAME} PRIVATE ${glm_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${angelscript_SOURCE_DIR}/angelscript/include)
 
 # Link libraries to the target
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Vulkan)
+target_link_libraries(${PROJECT_NAME} PRIVATE angelscript)
