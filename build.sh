@@ -21,7 +21,7 @@ fi
 cd "$BUILD_DIR"
 
 # Run CMake to configure the project with Ninja as the generator
-cmake -G "Ninja" ..
+cmake -G "Ninja" .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 # Build the project using Ninja
 ninja

@@ -53,6 +53,9 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${ENIGINE_DIR}/src)
 target_include_directories(${PROJECT_NAME} PRIVATE $ENV{VULKAN_SDK})
 target_include_directories(${PROJECT_NAME} PRIVATE ${glm_SOURCE_DIR})
 
+# Add GLFW include directory
+include_directories(${CMAKE_SOURCE_DIR}/build/_deps/glfw-src/include)
+
 # Link libraries to the target
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Vulkan)
