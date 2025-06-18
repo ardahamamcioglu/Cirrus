@@ -8,8 +8,6 @@
 
 #include <iostream>
 
-#include "angelscript.h"
-
 int main() {
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW\n";
@@ -33,8 +31,6 @@ int main() {
     glm::mat4 matrix;
     glm::vec4 vec;
     auto test = matrix * vec;
-
-    asIScriptEngine *engine = asCreateScriptEngine();
 
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();

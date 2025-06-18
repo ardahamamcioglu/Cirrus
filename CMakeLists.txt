@@ -21,15 +21,23 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glm)
 
-#Fetch AngelScript
+#Fetch imGUI
 FetchContent_Declare(
-    angelscript
-    URL https://www.angelcode.com/angelscript/sdk/files/angelscript_2.37.0.zip
+    imgui
+    GIT_REPOSITORY https://github.com/ocornut/imgui.git
+    GIT_TAG        v1.91.9b-docking
 )
+FetchContent_MakeAvailable(imgui)
+
+#Fetch AngelScript
+# FetchContent_Declare(
+#     angelscript
+#     URL https://www.angelcode.com/angelscript/sdk/files/angelscript_2.37.0.zip
+# )
 
 FetchContent_MakeAvailable(glfw)
 FetchContent_MakeAvailable(glm)
-FetchContent_MakeAvailable(angelscript)
+#FetchContent_MakeAvailable(angelscript)
 
 # Define the path to the enigine directory
 set(CIRRUS_DIR "${CMAKE_SOURCE_DIR}/..")
@@ -59,15 +67,31 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
   target_compile_definitions(${PROJECT_NAME} PUBLIC "WINDOWS_OS")
 endif()
 
-add_subdirectory(${angelscript_SOURCE_DIR}/angelscript/projects/cmake ${CMAKE_BINARY_DIR}/angelscript)
+#add_subdirectory(${angelscript_SOURCE_DIR}/angelscript/projects/cmake ${CMAKE_BINARY_DIR}/angelscript)
 
 # Include enigine headers
 target_include_directories(${PROJECT_NAME} PRIVATE ${ENIGINE_DIR}/src)
 target_include_directories(${PROJECT_NAME} PRIVATE $ENV{VULKAN_SDK})
 target_include_directories(${PROJECT_NAME} PRIVATE ${glm_SOURCE_DIR})
-target_include_directories(${PROJECT_NAME} PRIVATE ${angelscript_SOURCE_DIR}/angelscript/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${imgui_SOURCE_DIR})
 
-# Link libraries to the target
+#target_include_directories(${PROJECT_NAME} PRIVATE ${angelscript_SOURCE_DIR}/angelscript/include)
+
+# Add Dear ImGui source files
+file(GLOB IMGUI_SOURCES
+    ${imgui_SOURCE_DIR}/imgui.cpp
+    ${imgui_SOURCE_DIR}/imgui_draw.cpp
+    ${imgui_SOURCE_DIR}/imgui_tables.cpp
+    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_vulkan.cpp
+)
+
+
+# Add Dear ImGui sources to the target
+target_sources(${PROJECT_NAME} PRIVATE ${IMGUI_SOURCES})
+
+# Link GLFW and Vulkan (already done in your CMakeLists.txt)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Vulkan)
-target_link_libraries(${PROJECT_NAME} PRIVATE angelscript)
+#target_link_libraries(${PROJECT_NAME} PRIVATE angelscript)
