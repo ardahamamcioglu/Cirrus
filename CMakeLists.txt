@@ -69,8 +69,6 @@ endif()
 
 #add_subdirectory(${angelscript_SOURCE_DIR}/angelscript/projects/cmake ${CMAKE_BINARY_DIR}/angelscript)
 
-# Include enigine headers
-target_include_directories(${PROJECT_NAME} PRIVATE ${ENIGINE_DIR}/src)
 target_include_directories(${PROJECT_NAME} PRIVATE $ENV{VULKAN_SDK})
 target_include_directories(${PROJECT_NAME} PRIVATE ${glm_SOURCE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${imgui_SOURCE_DIR})
