@@ -8,37 +8,17 @@
 
 #include <iostream>
 
+#include "../include/HelloTriangle.h"
+
 int main() {
-    if (!glfwInit()) {
-        std::cerr << "Failed to initialize GLFW\n";
-        return -1;
+    HelloTriangleApplication app;
+
+    try {
+        app.run();
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
+        return EXIT_FAILURE;
     }
 
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Vulkan window", nullptr, nullptr);
-
-    if (!window) {
-        std::cerr << "Failed to create GLFW window\n";
-        glfwTerminate();
-        return -1;
-    }
-
-    uint32_t extensionCount = 0;
-    vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
-
-    std::cout << extensionCount << " extensions supported\n";
-
-    glm::mat4 matrix;
-    glm::vec4 vec;
-    auto test = matrix * vec;
-
-    while(!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
-    }
-
-    glfwDestroyWindow(window);
-
-    glfwTerminate();
-
-    return 0;
+    return EXIT_SUCCESS;
 }

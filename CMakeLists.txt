@@ -3,6 +3,8 @@ project(cirrus)
 
 include(FetchContent)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Fetch GLFW
@@ -22,12 +24,12 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(glm)
 
 #Fetch imGUI
-FetchContent_Declare(
-    imgui
-    GIT_REPOSITORY https://github.com/ocornut/imgui.git
-    GIT_TAG        v1.91.9b-docking
-)
-FetchContent_MakeAvailable(imgui)
+# FetchContent_Declare(
+#     imgui
+#     GIT_REPOSITORY https://github.com/ocornut/imgui.git
+#     GIT_TAG        v1.91.9b-docking
+# )
+# FetchContent_MakeAvailable(imgui)
 
 #Fetch AngelScript
 # FetchContent_Declare(
@@ -51,8 +53,8 @@ find_package(Vulkan REQUIRED)
 # Add all .cpp files in the src directory and its subdirectories
 file(GLOB_RECURSE CPP_SOURCES src/*.cpp)
 
-# Add all .h files in the src directory and its subdirectories
-file(GLOB_RECURSE HEADER_FILES src/*.h)
+# Add all .h files in the src/include directory and its subdirectories
+file(GLOB_RECURSE HEADER_FILES include/*.h)
 
 # Create the library target
 add_executable(${PROJECT_NAME} src/main.cpp ${CPP_SOURCES} ${HEADER_FILES})
@@ -71,23 +73,24 @@ endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE $ENV{VULKAN_SDK})
 target_include_directories(${PROJECT_NAME} PRIVATE ${glm_SOURCE_DIR})
-target_include_directories(${PROJECT_NAME} PRIVATE ${imgui_SOURCE_DIR})
+
+#target_include_directories(${PROJECT_NAME} PRIVATE ${imgui_SOURCE_DIR})
 
 #target_include_directories(${PROJECT_NAME} PRIVATE ${angelscript_SOURCE_DIR}/angelscript/include)
 
 # Add Dear ImGui source files
-file(GLOB IMGUI_SOURCES
-    ${imgui_SOURCE_DIR}/imgui.cpp
-    ${imgui_SOURCE_DIR}/imgui_draw.cpp
-    ${imgui_SOURCE_DIR}/imgui_tables.cpp
-    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
-    ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
-    ${imgui_SOURCE_DIR}/backends/imgui_impl_vulkan.cpp
-)
+# file(GLOB IMGUI_SOURCES
+#     ${imgui_SOURCE_DIR}/imgui.cpp
+#     ${imgui_SOURCE_DIR}/imgui_draw.cpp
+#     ${imgui_SOURCE_DIR}/imgui_tables.cpp
+#     ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+#     ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+#     ${imgui_SOURCE_DIR}/backends/imgui_impl_vulkan.cpp
+# )
 
 
 # Add Dear ImGui sources to the target
-target_sources(${PROJECT_NAME} PRIVATE ${IMGUI_SOURCES})
+#target_sources(${PROJECT_NAME} PRIVATE ${IMGUI_SOURCES})
 
 # Link GLFW and Vulkan (already done in your CMakeLists.txt)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
