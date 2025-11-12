@@ -1,6 +1,6 @@
 # Cirrus
 
-Cirrus is a minimal testbed for development using Vulkan. This project serves as a foundation for personal experimenting with Vulkan-based graphics programming and testing various features and techniques.
+Cirrus is a minimal testbed template for development using Vulkan. This project serves as a foundation for personal experimenting with Vulkan-based graphics programming and testing various features and techniques.
 
 ## Project Structure
 
